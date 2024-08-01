@@ -89,7 +89,6 @@ else:
 
 import os
 import requests
-import json
 
 # 定义发送企业微信消息的函数
 def send_wechat_message(webhook_url, message):
@@ -109,17 +108,13 @@ def send_wechat_message(webhook_url, message):
 # 从环境变量中获取企业微信Webhook URL
 wechat_webhook_url = os.getenv('WECHAT_WEBHOOK_URL')
 
-# 准备要发送的消息内容
 # 此处content变量应包含您要推送的消息内容
-# 例如，您可以从现有脚本中获取content变量的值
-content = "本次登录用户共：{user_num} 个\n登录时间：{time}\n登录IP：{loginip}"
-# 替换上述字符串中的占位符为实际值
-# user_num = 2  # 示例值，实际应从脚本中获取
-# time = "2024-08-02 00:42:21"  # 示例值，实际应从脚本中获取
-# loginip = "101.47.8.237"  # 示例值，实际应从脚本中获取
+# 假设您已经有了content变量，例如：
+# content = "SSH服务器登录信息：\n用户名：user1，服务器：hostname1\n用户名：user2，服务器：hostname2\n本次登录用户共：2 个\n登录时间：2024-08-02 00:42:21\n登录IP：101.47.8.237"
 
 # 调用函数发送消息到企业微信
 if wechat_webhook_url:
     send_wechat_message(wechat_webhook_url, content)
 else:
     print("未设置企业微信Webhook URL，跳过消息发送。")
+
