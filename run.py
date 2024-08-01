@@ -82,3 +82,46 @@ elif push == "telegram":
     telegram_push(content)
 else:
     print("推送失败，推送参数设置错误")
+
+
+
+
+
+import os
+import requests
+import json
+
+# 定义发送企业微信消息的函数
+def send_wechat_message(webhook_url, message):
+    headers = {'Content-Type': 'application/json'}
+    data = {
+        "msgtype": "text",
+        "text": {
+            "content": message
+        }
+    }
+    response = requests.post(webhook_url, headers=headers, json=data)
+    if response.ok:
+        print("企业微信消息发送成功")
+    else:
+        print(f"企业微信消息发送失败，状态码：{response.status_code}，错误信息：{response.text}")
+
+# 从环境变量中获取企业微信Webhook URL
+wechat_webhook_url = os.getenv('WECHAT_WEBHOOK_URL')
+
+# 准备要发送的消息内容，这里需要根据实际情况调整results变量的来源和结构
+# 假设results是一个字典，其键是命令名称，值是一个列表，列表中包含三个元素的元组(hostname, command_executed, result)
+# 您需要根据实际情况调整results变量的获取方式和结构
+results = {}  # 这里应该根据实际执行的命令和结果填充
+
+message = "SSH命令执行结果汇总：\n"
+for command, command_results in results.items():
+    message += f"执行命令 '{command}' 的结果：\n"
+    for hostname, command_executed, result in command_results:
+        message += f"服务器 {hostname} 上执行 '{command_executed}' 的结果是: {result}\n"
+
+# 发送消息到企业微信
+if wechat_webhook_url:
+    send_wechat_message(wechat_webhook_url, message)
+else:
+    print("未设置企业微信Webhook URL，跳过消息发送。")
