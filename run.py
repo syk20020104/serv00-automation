@@ -109,19 +109,17 @@ def send_wechat_message(webhook_url, message):
 # 从环境变量中获取企业微信Webhook URL
 wechat_webhook_url = os.getenv('WECHAT_WEBHOOK_URL')
 
-# 准备要发送的消息内容，这里需要根据实际情况调整results变量的来源和结构
-# 假设results是一个字典，其键是命令名称，值是一个列表，列表中包含三个元素的元组(hostname, command_executed, result)
-# 您需要根据实际情况调整results变量的获取方式和结构
-results = {}  # 这里应该根据实际执行的命令和结果填充
+# 准备要发送的消息内容
+# 此处content变量应包含您要推送的消息内容
+# 例如，您可以从现有脚本中获取content变量的值
+content = "本次登录用户共：{user_num} 个\n登录时间：{time}\n登录IP：{loginip}"
+# 替换上述字符串中的占位符为实际值
+# user_num = 2  # 示例值，实际应从脚本中获取
+# time = "2024-08-02 00:42:21"  # 示例值，实际应从脚本中获取
+# loginip = "101.47.8.237"  # 示例值，实际应从脚本中获取
 
-message = "SSH命令执行结果汇总：\n"
-for command, command_results in results.items():
-    message += f"执行命令 '{command}' 的结果：\n"
-    for hostname, command_executed, result in command_results:
-        message += f"服务器 {hostname} 上执行 '{command_executed}' 的结果是: {result}\n"
-
-# 发送消息到企业微信
+# 调用函数发送消息到企业微信
 if wechat_webhook_url:
-    send_wechat_message(wechat_webhook_url, message)
+    send_wechat_message(wechat_webhook_url, content)
 else:
     print("未设置企业微信Webhook URL，跳过消息发送。")
